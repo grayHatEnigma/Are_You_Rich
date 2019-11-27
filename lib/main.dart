@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 
-int counter = 0;
+double h = 200;
+double w = 200;
 
 void main() {
   runApp(
-    MaterialApp(
+    MyApp(),
+  );
+} // main
+
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.red[50],
@@ -17,36 +30,51 @@ void main() {
           ),
           backgroundColor: Colors.red[700],
         ),
-        body: Center(
-          child: ResizableImage(h: 300, w: 300),
-        ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.red[500],
-          onPressed: button,
-          child: Icon(Icons.add),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ResizeImage(height: h, width: w),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.minimize),
+                  color: Colors.redAccent,
+                  onPressed: () {
+                    setState(() {
+                      w = w - 20;
+                      h = h - 20;
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  color: Colors.redAccent,
+                  onPressed: () {
+                    setState(() {
+                      w = w + 20;
+                      h = h + 20;
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-    ),
-  );
-} // main
+    );
+  }
+}
 
-void button() {
-  counter++;
-  print("Button Presses ! $counter times");
-} // button
-
-class ResizableImage extends StatelessWidget {
-  final double h;
-  final double w;
-  ResizableImage({this.h, this.w});
-
+class ResizeImage extends StatelessWidget {
+  final double height;
+  final double width;
+  ResizeImage({this.height, this.width});
   @override
   Widget build(BuildContext context) {
-    String path = 'images/gem.png';
-    return Image(
-      image: AssetImage(path),
-      width: w,
-      height: h,
-    );
+    return Image.asset('images/gem.png', height: height, width: width);
   }
 }
